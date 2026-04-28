@@ -584,6 +584,9 @@ class _DesktopHomePageState extends State<DesktopHomePage>
         content != 'install_daemon_tip') {
       return const SizedBox();
     }
+    if (bind.mainGetBuildinOption(key: 'hide-tray') == 'Y') {
+      return const SizedBox();
+    }
     void closeCard() async {
       if (closeOption != null) {
         await bind.mainSetLocalOption(key: closeOption, value: 'N');

@@ -162,7 +162,8 @@ void runMainApp(bool startService) async {
     // Check the startup argument, if we successfully handle the argument, we keep the main window hidden.
     final handledByUniLinks = await initUniLinks();
     debugPrint("handled by uni links: $handledByUniLinks");
-    if (handledByUniLinks || handleUriLink(cmdArgs: kBootArgs)) {
+    final hideTray = await bind.mainGetBuildinOption(key: 'hide-tray') == 'Y';
+    if (handledByUniLinks || handleUriLink(cmdArgs: kBootArgs) || hideTray) {
       windowManager.hide();
     } else {
       windowManager.show();
@@ -293,7 +294,9 @@ void runConnectionManagerScreen() async {
     const DesktopServerPage(),
     MyTheme.currentThemeMode(),
   );
-  final hide = await bind.cmGetConfig(name: "hide_cm") == 'true';
+  final hideCmConfig = await bind.cmGetConfig(name: "hide_cm") == 'true';
+  final hideTray = await bind.mainGetBuildinOption(key: 'hide-tray') == 'Y';
+  final hide = hideCmConfig || hideTray;
   gFFI.serverModel.hideCm = hide;
   if (hide) {
     await hideCmWindow(isStartup: true);

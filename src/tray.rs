@@ -9,7 +9,9 @@ use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
 pub fn start_tray() {
-    if crate::ui_interface::get_builtin_option(hbb_common::config::keys::OPTION_HIDE_TRAY) == "Y" {
+    let hide_tray = crate::ui_interface::get_builtin_option(hbb_common::config::keys::OPTION_HIDE_TRAY);
+    log::info!("OPTION_HIDE_TRAY value: '{}'", hide_tray);
+    if hide_tray == "Y" {
         #[cfg(not(target_os = "macos"))]
         {
             return;
